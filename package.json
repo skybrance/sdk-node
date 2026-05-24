@@ -1,0 +1,38 @@
+{
+    "name": "@skybrance/sdk-node",
+    "version": "1.0.0",
+    "description": "The official Node.js SDK for SkyBrance APIs. Easily integrate link shortening and analytics into your applications.",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "scripts": {
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/skybrance/sdk-node.git"
+    },
+    "keywords": [
+        "skybrance",
+        "link-shortener",
+        "sdk",
+        "api-client",
+        "analytics"
+    ],
+    "author": "SkyBrance Tech Private Limited",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/skybrance/sdk-node/issues"
+    },
+    "homepage": "https://skybrance.com/docs",
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
