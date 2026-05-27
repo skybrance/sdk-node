@@ -1,67 +1,115 @@
 # SkyBrance Node.js SDK
 
-The official Node.js SDK for [SkyBrance](https://skybrance.com) services. Integrate link shortening, analytics, and other SkyBrance features into your applications.
+SkyBrance Node.js SDK is a monorepo with two packages:
 
-## Installation
+- `@skybrance/auth` for authenticated API requests.
+- `@skybrance/link-shortner` for link management, analytics, OG image upload, and link deletion.
 
-Install from npm:
+## Workspace Structure
+
+```text
+packages/
+  auth/
+  link-shortner/
+```
+
+## Install
+
+Install dependencies from the workspace root:
 
 ```bash
-npm install @skybrance/sdk-node
+npm install
 ```
 
-## Quick Start
+## Build
 
-Initialize the SDK with your API key and create a shortened link.
+Build each package independently:
 
-### JavaScript (CommonJS)
-
-```javascript
-const { SkyBranceClient } = require("@skybrance/sdk-node");
-
-// Initialize the client
-const skybrance = new SkyBranceClient("YOUR_API_KEY");
-
-// Example: Create a new shortened link
-async function run() {
-  try {
-    const link = await skybrance.createLink({
-      url: "https://google.com",
-      customAlias: "my-link",
-    });
-    console.log("Shortened link:", link.shortUrl);
-  } catch (error) {
-    console.error("Error creating link:", error.message);
-  }
-}
-
-run();
+```bash
+npm --workspace @skybrance/auth run build
+npm --workspace @skybrance/link-shortner run build
 ```
 
-### TypeScript / ESM
+## Package Overview
+
+### `@skybrance/auth`
+
+The auth package exports `SkyBranceClient`.
+
+Constructor options:
+
+- `apiKeyId` and `apiKeySecret` are required.
+- `environment` can be `development` or `production`.
+- `customDomain` overrides the API host.
+- `version` defaults to `v1.0.0`.
+
+Methods:
+
+- `request(endpoint, options)` sends an authenticated JSON request.
+- `verify()` checks whether the credentials are valid.
+
+Development base URL:
+
+```text
+http://localhost:15000/api-user
+```
+
+Production base URL:
+
+```text
+https://api.skybrance.com/api-user
+```
+
+### `@skybrance/link-shortner`
+
+The link shortener package exports `SkyBranceLinkShortener` and the related response types.
+
+Methods:
+
+- `create(params)` creates a shortened link.
+- `update(id, params)` updates an existing link.
+- `getById(id, numberOfPastDays?)` fetches a link with analytics history.
+- `uploadOgImage(id, { contentType })` generates an OG image upload URL.
+- `deleteById(id)` deletes a link.
+- `getList(filters?)` returns paginated links.
+
+Supported OG image content types:
+
+- `image/jpeg`
+- `image/png`
+- `image/jpg`
+- `image/webp`
+
+## Example Usage
 
 ```ts
-import { SkyBranceClient } from "@skybrance/sdk-node";
+import { SkyBranceClient } from "@skybrance/auth";
+import { SkyBranceLinkShortener } from "@skybrance/link-shortner";
 
-const skybrance = new SkyBranceClient(process.env.SKYBRANCE_API_KEY || "");
+const client = new SkyBranceClient({
+  apiKeyId: process.env.API_KEY_ID,
+  apiKeySecret: process.env.API_KEY_SECRET,
+  environment: "development",
+});
 
-// Use the same API methods as shown in the JavaScript example
+const links = new SkyBranceLinkShortener(client);
+
+const created = await links.create({
+  url: "https://example.com",
+  title: "Example",
+});
+
+const details = await links.getById(created._id, 7);
+const ogImage = await links.uploadOgImage(created._id, {
+  contentType: "image/jpeg",
+});
+await links.deleteById(created._id);
 ```
 
-## Features
+## Package Scripts
 
-- Link Shortening — Easily shorten long URLs.
-- Analytics — Track clicks and engagement for your generated links.
-- TypeScript Support — Full type definitions for a better developer experience.
-
-## Documentation
-
-For full API reference and advanced usage, see the official documentation on the SkyBrance website.
+Each package exposes a `build` script. The package test files are runnable with `tsx` and read credentials from `.env`.
 
 ## License
 
-This project is licensed under the MIT License.
-
-## Contributing
-
-Contributions are welcome. Please open issues or pull requests and follow the contributing guidelines.
+MIT
