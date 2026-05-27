@@ -3,7 +3,15 @@
     "version": "1.0.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "scripts": {
+        "test": "npx tsx --env-file=.env test.ts",
+        "build": "tsc"
+    },
     "devDependencies": {
-        "typescript": "^6.0.3"
-    }
+        "@types/node": "^20.19.41",
+        "typescript": "^5.4.5"
+    },
+    "files": [
+        "dist"
+    ]
 }
