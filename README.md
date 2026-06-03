@@ -3,14 +3,14 @@
 SkyBrance Node.js SDK is a monorepo with two packages:
 
 - `@skybrance/auth` for authenticated API requests.
-- `@skybrance/link-shortner` for link management, analytics, OG image upload, and link deletion.
+- `@skybrance/link-shortener` for link management, analytics, OG image upload, and link deletion.
 
 ## Workspace Structure
 
 ```text
 packages/
   auth/
-  link-shortner/
+  link-shortener/
 ```
 
 ## Install
@@ -27,7 +27,7 @@ Build each package independently:
 
 ```bash
 npm --workspace @skybrance/auth run build
-npm --workspace @skybrance/link-shortner run build
+npm --workspace @skybrance/link-shortener run build
 ```
 
 ## Package Overview
@@ -60,7 +60,7 @@ Production base URL:
 https://api.skybrance.com/api-user
 ```
 
-### `@skybrance/link-shortner`
+### `@skybrance/link-shortener`
 
 The link shortener package exports `SkyBranceLinkShortener` and the related response types.
 
@@ -84,7 +84,7 @@ Supported OG image content types:
 
 ```ts
 import { SkyBranceClient } from "@skybrance/auth";
-import { SkyBranceLinkShortener } from "@skybrance/link-shortner";
+import { SkyBranceLinkShortener } from "@skybrance/link-shortener";
 
 const client = new SkyBranceClient({
   apiKeyId: process.env.API_KEY_ID,
